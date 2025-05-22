@@ -1,6 +1,6 @@
 # Talkers
 
-Adds an API to add talking NPCs with [ollama](https://ollama.com)) and [Mobs Redo API](https://content.luanti.org/packages/TenPlus1/mobs/)) .
+Adds an API to add talking NPCs with [ollama](https://ollama.com) and [Mobs Redo API](https://content.luanti.org/packages/TenPlus1/mobs/).
 
 Read talkers.lua to see how the API works.
 <br>

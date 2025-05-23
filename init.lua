@@ -76,7 +76,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 		http.fetch({
 			method = "POST",
 			url = url,
-			data = core.write_json({ model = ai, messages = { { role = "system", content = system }, { role = "user", content = user } }, stream = false })
+			data = core.write_json({ model = ai, messages = { { role = "system", content = system .. S(" Respond in English") }, { role = "user", content = user } }, stream = false })
 		},
 		function(chat_respond)
 
@@ -129,7 +129,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 				http.fetch({
 					method = "POST",
 					url = url,
-					data = core.write_json({ model = ai, messages = { { role = "system", content = system }, { role = "user", content = string.gsub(fields["input_text"], "/", "") } }, stream = false })
+					data = core.write_json({ model = ai, messages = { { role = "system", content = system .. S(" Respond in English") }, { role = "user", content = string.gsub(fields["input_text"], "/", "") } }, stream = false })
 				},
 				function(chat_respond)
 					chat_respond.data = core.parse_json(chat_respond.data)

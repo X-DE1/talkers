@@ -80,7 +80,7 @@ if minetest.get_modpath("wandering_traders") then
 				if mobs:protect(self, clicker) then return true end
 				
 			end,
-	}, characters, "default:stick", "http://localhost:11434/api/chat", "qwen3:0.6b")
+	}, characters, "default:stick", "http://localhost:11434/api/chat", "qwen3:0.6b", 20)
 		
 	mobs:register_egg("talkers:talker", S("Talker"), "default_sandstone.png", 1)
 

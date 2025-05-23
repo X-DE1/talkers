@@ -19,7 +19,7 @@ local function insertarSaltosDeLinea(texto, longitud)
 	return table.concat(resultado, "\n")
 end
 
-function talkers.register_talker(name, register_mob, characters, tool, url, ai, memori)
+function talkers.register_talker(name, register_mob, characters, tool, url, ai, wait)
 
 	local current_modname = minetest.get_current_modname()
 	
@@ -91,7 +91,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 					talkers[current_modname].after[name]:cancel()
 				end
 				
-				talkers[current_modname].after[name] = minetest.after(20, function()
+				talkers[current_modname].after[name] = minetest.after(wait, function()
 					self.order = register_mob.order
 					minetest.close_formspec(name, current_modname .. ":chat")
 				end)
@@ -141,7 +141,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 							talkers[current_modname].after[name]:cancel()
 						end
 						
-						talkers[current_modname].after[name] = minetest.after(20, function()
+						talkers[current_modname].after[name] = minetest.after(wait, function()
 							minetest.close_formspec(name, current_modname .. ":chat")
 							talkers[current_modname].id[name].order = original_order
 						end)

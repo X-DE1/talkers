@@ -80,27 +80,34 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 		},
 		function(chat_respond)
 
-			chat_respond.data = core.parse_json(chat_respond.data)
-
-			if chat_respond.data.done == true then
+			if chat_respond.succeeded == true then
 			
-				res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
-				res = insertarSaltosDeLinea(res, 70)
+				chat_respond.data = core.parse_json(chat_respond.data)
+
+				if chat_respond.data.done == true then
 				
-				if talkers[current_modname].after[name] then
-					talkers[current_modname].after[name]:cancel()
+					res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
+					res = insertarSaltosDeLinea(res, 70)
+					
+					if talkers[current_modname].after[name] then
+						talkers[current_modname].after[name]:cancel()
+					end
+					
+					talkers[current_modname].after[name] = minetest.after(wait, function()
+						self.order = register_mob.order
+						minetest.close_formspec(name, current_modname .. ":chat")
+					end)
+					
+					minetest.show_formspec(name, current_modname .. ":chat",
+					"size[8,6]" ..
+					"label[0.3,-0.5;" .. res .. "]" ..
+					"field[2,3;4.5,1;input_text;" .. S("Write here:") .. ";]" ..
+					"button[3,4;2,1;send;" .. S("Send") .. "]")
 				end
-				
-				talkers[current_modname].after[name] = minetest.after(wait, function()
-					self.order = register_mob.order
-					minetest.close_formspec(name, current_modname .. ":chat")
-				end)
-				
-				minetest.show_formspec(name, current_modname .. ":chat",
+			else
+				minetest.show_formspec(name, current_modname .. ":error",
 				"size[8,6]" ..
-				"label[0.3,-0.5;" .. res .. "]" ..
-				"field[2,3;4.5,1;input_text;" .. S("Write here:") .. ";]" ..
-				"button[3,4;2,1;send;" .. S("Send") .. "]")
+				"label[2.7,2;" .. S("There was an error.\nPlease try again later.") .. "]")	
 			end
 		end)
 	end
@@ -132,25 +139,33 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 					data = core.write_json({ model = ai, messages = { { role = "system", content = system .. " Respond in " .. S("English") }, { role = "user", content = string.gsub(fields["input_text"], "/", "") } }, stream = false })
 				},
 				function(chat_respond)
-					chat_respond.data = core.parse_json(chat_respond.data)
-					if chat_respond.data.done == true then
-						res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
-						res = insertarSaltosDeLinea(res, 70)
-						
-						if talkers[current_modname].after[name] then
-							talkers[current_modname].after[name]:cancel()
+					if chat_respond.succeeded == true then
+							
+						chat_respond.data = core.parse_json(chat_respond.data)
+							
+						if chat_respond.data.done == true then
+							res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
+							res = insertarSaltosDeLinea(res, 70)
+							
+							if talkers[current_modname].after[name] then
+								talkers[current_modname].after[name]:cancel()
+							end
+							
+							talkers[current_modname].after[name] = minetest.after(wait, function()
+								minetest.close_formspec(name, current_modname .. ":chat")
+								talkers[current_modname].id[name].order = original_order
+							end)
+							
+							minetest.show_formspec(name, current_modname .. ":chat",
+							"size[8,6]" ..
+							"label[0.3,-0.5;" .. res .. "]" ..
+							"field[2,3;4.5,1;input_text;" .. S("Write here:") .. ";]" ..
+							"button[3,4;2,1;send;" .. S("Send") .. "]")
 						end
-						
-						talkers[current_modname].after[name] = minetest.after(wait, function()
-							minetest.close_formspec(name, current_modname .. ":chat")
-							talkers[current_modname].id[name].order = original_order
-						end)
-						
-						minetest.show_formspec(name, current_modname .. ":chat",
+					else
+						minetest.show_formspec(name, current_modname .. ":error",
 						"size[8,6]" ..
-						"label[0.3,-0.5;" .. res .. "]" ..
-						"field[2,3;4.5,1;input_text;" .. S("Write here:") .. ";]" ..
-						"button[3,4;2,1;send;" .. S("Send") .. "]")
+						"label[2.7,2;" .. S("There was an error.\nPlease try again later.") .. "]")	
 					end
 				end)
 			end

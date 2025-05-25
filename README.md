@@ -4,7 +4,7 @@ Adds an API to add talking NPCs with [ollama](https://ollama.com) and [Mobs Redo
 
 Read talkers.lua to see how the API works.
 <br>
-talkers.register_talker(name, register_mob, characters, tool, url, ai)
+talkers.register_talker(name, register_mob, characters, tool, url, ai, wait)
 
 If you add this mod in secure.trusted_mods, secure.http_mods in advanced settings, have wandering_traders mod and qwen3:0.6b in http://localhost:11434/api/chat you can test the result of the api.
 

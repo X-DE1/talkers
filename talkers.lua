@@ -1,6 +1,4 @@
 
-local S = minetest.get_translator("talkers")
-
 if minetest.get_modpath("wandering_traders") then
 
 	local characters = {
@@ -82,6 +80,6 @@ if minetest.get_modpath("wandering_traders") then
 			end,
 	}, characters, "default:stick", "http://localhost:11434/api/chat", "qwen3:0.6b", 20)
 		
-	mobs:register_egg("talkers:talker", S("Talker"), "default_sandstone.png", 1)
+	mobs:register_egg("talkers:talker", "Talker", "default_sandstone.png", 1)
 
 end

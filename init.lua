@@ -136,7 +136,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 				http.fetch({
 					method = "POST",
 					url = url,
-					data = core.write_json({ model = ai, messages = { { role = "system", content = system .. " Respond in " .. S("English") }, { role = "user", content = string.gsub(fields["input_text"], "/", "") } }, stream = false })
+					data = core.write_json({ model = ai, messages = { { role = "system", content = system .. " Respond in " .. S("English") }, { role = "user", content = fields["input_text"] } }, stream = false })
 				},
 				function(chat_respond)
 					if chat_respond.succeeded == true then

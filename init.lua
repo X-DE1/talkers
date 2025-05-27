@@ -90,6 +90,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 					res = insertarSaltosDeLinea(res, 70)
 					
 					if talkers[current_modname].after[name] then
+						talkers[current_modname].after[name].func()
 						talkers[current_modname].after[name]:cancel()
 					end
 					
@@ -148,6 +149,7 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 							res = insertarSaltosDeLinea(res, 70)
 							
 							if talkers[current_modname].after[name] then
+								talkers[current_modname].after[name].func()
 								talkers[current_modname].after[name]:cancel()
 							end
 							

@@ -80,6 +80,18 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 		},
 		function(chat_respond)
 
+			if talkers[current_modname].after[name] then
+				talkers[current_modname].after[name].func()
+				talkers[current_modname].after[name]:cancel()
+			end
+			
+			talkers[current_modname].after[name] = minetest.after(wait, function()
+				self.order = register_mob.order
+				minetest.close_formspec(name, current_modname .. ":error")
+				minetest.close_formspec(name, current_modname .. ":chat")
+			end)
+
+
 			if chat_respond.succeeded == true then
 			
 				chat_respond.data = core.parse_json(chat_respond.data)
@@ -88,16 +100,6 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 				
 					res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
 					res = insertarSaltosDeLinea(res, 70)
-					
-					if talkers[current_modname].after[name] then
-						talkers[current_modname].after[name].func()
-						talkers[current_modname].after[name]:cancel()
-					end
-					
-					talkers[current_modname].after[name] = minetest.after(wait, function()
-						self.order = register_mob.order
-						minetest.close_formspec(name, current_modname .. ":chat")
-					end)
 					
 					minetest.show_formspec(name, current_modname .. ":chat",
 					"size[8,6]" ..
@@ -140,6 +142,19 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 					data = core.write_json({ model = ai, messages = { { role = "system", content = system .. " Respond in " .. S("English") }, { role = "user", content = fields["input_text"] } }, stream = false })
 				},
 				function(chat_respond)
+
+					if talkers[current_modname].after[name] then
+						talkers[current_modname].after[name].func()
+						talkers[current_modname].after[name]:cancel()
+					end
+					
+					talkers[current_modname].after[name] = minetest.after(wait, function()
+						self.order = register_mob.order
+						minetest.close_formspec(name, current_modname .. ":error")
+						minetest.close_formspec(name, current_modname .. ":chat")
+					end)
+
+							
 					if chat_respond.succeeded == true then
 							
 						chat_respond.data = core.parse_json(chat_respond.data)
@@ -147,16 +162,6 @@ function talkers.register_talker(name, register_mob, characters, tool, url, ai, 
 						if chat_respond.data.done == true then
 							res = chat_respond.data.message.content:gsub("<think>.-</think>", "")
 							res = insertarSaltosDeLinea(res, 70)
-							
-							if talkers[current_modname].after[name] then
-								talkers[current_modname].after[name].func()
-								talkers[current_modname].after[name]:cancel()
-							end
-							
-							talkers[current_modname].after[name] = minetest.after(wait, function()
-								minetest.close_formspec(name, current_modname .. ":chat")
-								talkers[current_modname].id[name].order = original_order
-							end)
 							
 							minetest.show_formspec(name, current_modname .. ":chat",
 							"size[8,6]" ..
